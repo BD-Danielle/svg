@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVG rendering</title>
+</head>
+<body>
+  <div class="LUNAR_CAL">
+    <div class="CURVE_DATA">
+      <div id="lineGraphWrapper">
+        <!-- cx as month -->
+        <!-- cy as score -->
+        <!-- level1(大吉) => 20, level2(吉) => 64, level3(平) => 108, level4(不佳) => 152-->
+        <!-- scores = [20, 64, 108, 152, 20, 64, 108, 152, 20, 64, 152, 20] -->
+        <!-- svg as below -->
+        <svg id="lineGraph" viewbox="0 0 480 170" width="480" height="170">
+          <polyline points="20
+          ,20 60
+          ,64 100
+          ,108 140
+          ,152 180
+          ,20 220
+          ,64 260
+          ,108 300
+          ,152 340
+          ,20 380
+          ,64 420
+          ,152 460,
+          20"></polyline>
+          <circle cx="20" cy="20" r="4"></circle> <!-- Jan -->
+          <circle cx="60" cy="64" r="4"></circle> <!-- Feb -->
+          <circle cx="100" cy="108" r="4"></circle> <!-- Mar -->
+          <circle cx="140" cy="152" r="4"></circle> <!-- Apr -->
+          <circle cx="180" cy="20" r="4"></circle> <!-- May -->
+          <circle cx="220" cy="64" r="4"></circle> <!-- Jun -->
+          <circle cx="260" cy="108" r="4"></circle> <!-- Jul -->
+          <circle cx="300" cy="152" r="4"></circle> <!-- Aug -->
+          <circle cx="340" cy="20" r="4"></circle> <!-- Sep -->
+          <circle cx="380" cy="64" r="4"></circle> <!-- Oct -->
+          <circle cx="420" cy="152" r="4"></circle> <!-- Nov -->
+          <circle cx="460" cy="20" r="4"></circle> <!-- Dec -->
+        </svg>
+
+        <style>
+            .LUNAR_CAL{
+              margin: 31px 83px;
+              width: 600px;
+              height: 300px;
+            }
+            .CURVE_DATA{
+              position: relative;
+              background-image: url(./images/lunar2023.jpg);
+              background-repeat: no-repeat;
+              background-size: 100%;
+              height: inherit;
+            }
+            #lineGraphWrapper{
+              position: absolute;
+              bottom: 25%;
+              left: 10%;
+              bottom: 79px;
+              left: 61px;
+              height: 170px;
+              width: 480px;
+            }
+            #lineGraph{
+              stroke: #5c8f11;
+              stroke-width: 3px;
+            }
+            #lineGraph polyline{
+              fill: none;
+            }
+            #lineGraph circle{
+              fill: #89C333;
+              stroke: none;
+            }
+        </style>
+        <script type="text/javascript">
+          const pointSize = 4;
+          let cx = [20, 60, 100, 140, 180, 220, 260, 300, 340, 380, 420, 460]; //fixed values
+          let cy = [20, 64, 108, 152,  20,  64, 108, 152,  20,  64, 152, 20]; //scores flexible values
+          let polyline = document.querySelector("#lineGraph polyline");
+          let circles = document.querySelectorAll("#lineGraph circle");
+          let points = "";
+          circles.forEach((c, i, a)=>{
+            c.setAttribute('r', pointSize);
+            c.setAttribute('cx', cx[i]);
+            c.setAttribute('cy', cy[i]);
+            if(i==0){
+              points+=cx[i];
+              points+=','+cy[i]+' '+cx[++i];
+            }else if(i==a.length-1){
+              points+=','+cy[i];
+            }else{
+              points+=','+cy[i]+' '+cx[++i];
+            }
+          });
+          polyline.setAttribute("points", points);
+        </script>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
