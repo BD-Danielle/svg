@@ -98,7 +98,7 @@
                 // console.log('svgHeight: ', svgHeight, 'svgWidth: ', svgWidth);
                 
                 cx = scores.map((c, i, a)=>(i+1)*svgWidth/a.length-svgWidth/a.length/2);
-                cy = scores.map((c, i, a)=>(Math.abs((scores[i]%baseline)/cySpacing-5))*svgHeight/levels-svgHeight/levels/2);
+                cy = scores.map((c, i, a)=>(Math.abs((scores[i]%baseline)/cySpacing-levels))*svgHeight/levels-svgHeight/levels/2);
                 scores.forEach((c, i, a)=>{
                   if(i==0){
                     points+=cx[i];
