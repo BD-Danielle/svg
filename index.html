@@ -10,11 +10,11 @@
   <div class="LUNAR_CAL">
     <div class="CURVE_DATA">
       <div id="lineGraphWrapper">
-        <img src="./images/calendar_10c_line.jpg" alt="">
+        <img src="./images/calendar_10c.jpg" alt="">
         <div id="lineGraphSVG">
           <!-- cx as month -->
           <!-- cy as score -->
-          <!-- level1(大吉) => 1, level2(吉) => 2, level3(平) => 3, level4(不佳) => 4-->
+          <!-- level1(很好) => 95, level2(不錯) => 85, level3(普通) => 75, level4(略差) => 65, level5(不佳) => 55-->
           <!-- svg as below -->
           <svg id="lineGraph" width="100%" height="100%">
             <polyline points="20,20 60,64 100,108 140,152 180,20 220,64 260,108 300,152 340,20 380,64 420,152 460,20"></polyline>
@@ -28,8 +28,6 @@
             <circle cx="300" cy="152" r="4"></circle> <!-- 2030 -->
             <circle cx="340" cy="20" r="4"></circle> <!-- 2031 -->
             <circle cx="380" cy="64" r="4"></circle> <!-- 2032 -->
-            <!-- <circle cx="420" cy="152" r="4"></circle> Nov -->
-            <!-- <circle cx="460" cy="20" r="4"></circle> Dec -->
           </svg>
   
           <style>
@@ -69,24 +67,27 @@
                 transform: translate(3%, 1%);
               }
               #lineGraph{
-                stroke: #8f112a;
+                stroke: #97c24d;
                 stroke-width: 3px;
               }
               #lineGraph polyline{
                 fill: none;
               }
               #lineGraph circle{
-                fill: #c333a4;
+                fill: #5f9600;
                 stroke: none;
               }
+              /*線條為#97c24d，點點為#5f9600*/
           </style>
           <script type="text/javascript">
             window.addEventListener("DOMContentLoaded", function(){
-              const pointSize = 4;
               let cx = []; //flexible values
               let cy = []; //flexible values
-              let scores = [2, 2, 3, 1, 5, 2, 3, 4, 3, 2]; //scores flexible values
+              let cySpacing = 10;
+              let baseline = 55;
+              const pointSize = 4;
               const levels = 5;
+              let scores = [55, 65, 75, 85, 95, 55, 65, 75, 85, 95]; //scores flexible values
               const polyline = document.querySelector("#lineGraph polyline");
               const circles = document.querySelectorAll("#lineGraph circle");
               function getAttribute(){
@@ -95,8 +96,9 @@
                 let svgHeight = getBoundingClientRect.height || 200;
                 let svgWidth = getBoundingClientRect.width;
                 // console.log('svgHeight: ', svgHeight, 'svgWidth: ', svgWidth);
+                
                 cx = scores.map((c, i, a)=>(i+1)*svgWidth/a.length-svgWidth/a.length/2);
-                cy = scores.map((c, i, a)=>scores[i]*svgHeight/levels-svgHeight/levels/2);
+                cy = scores.map((c, i, a)=>(Math.abs((scores[i]%baseline)/cySpacing-5))*svgHeight/levels-svgHeight/levels/2);
                 scores.forEach((c, i, a)=>{
                   if(i==0){
                     points+=cx[i];
