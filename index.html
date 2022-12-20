@@ -18,16 +18,6 @@
           <!-- svg as below -->
           <svg id="lineGraph" width="100%" height="100%">
             <polyline points="20,20 60,64 100,108 140,152 180,20 220,64 260,108 300,152 340,20 380,64 420,152 460,20"></polyline>
-            <circle cx="20" cy="20" r="4"></circle> <!-- 2023 -->
-            <circle cx="60" cy="64" r="4"></circle> <!-- 2024 -->
-            <circle cx="100" cy="108" r="4"></circle> <!-- 2025 -->
-            <circle cx="140" cy="152" r="4"></circle> <!-- 2026 -->
-            <circle cx="180" cy="20" r="4"></circle> <!-- 2027 -->
-            <circle cx="220" cy="64" r="4"></circle> <!-- 2028 -->
-            <circle cx="260" cy="108" r="4"></circle> <!-- 2029 -->
-            <circle cx="300" cy="152" r="4"></circle> <!-- 2030 -->
-            <circle cx="340" cy="20" r="4"></circle> <!-- 2031 -->
-            <circle cx="380" cy="64" r="4"></circle> <!-- 2032 -->
           </svg>
   
           <style>
@@ -81,15 +71,14 @@
           </style>
           <script type="text/javascript">
             window.addEventListener("DOMContentLoaded", function(){
+              let scores = [95, 65, 75, 85, 95, 55, 65, 75, 85, 95]; //scores flexible values
               let cx = []; //flexible values
               let cy = []; //flexible values
               let cySpacing = 10;
               let baseline = 55;
               const pointSize = 4;
               const levels = 5;
-              let scores = [55, 65, 75, 85, 95, 55, 65, 75, 85, 95]; //scores flexible values
               const polyline = document.querySelector("#lineGraph polyline");
-              const circles = document.querySelectorAll("#lineGraph circle");
               function getAttribute(){
                 let points = '';
                 let getBoundingClientRect = document.querySelector("#lineGraphSVG").getBoundingClientRect();
@@ -111,18 +100,26 @@
                 })
                 polyline.setAttribute("points", points);
               }
-              function svgRendering(){
-                circles.forEach((c, i, a)=>{
-                  c.setAttribute('r', pointSize);
-                  c.setAttribute('cx', cx[i]);
-                  c.setAttribute('cy', cy[i]);
+              function makeSVG(tag, attrs) {
+                let el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+                for (let k in attrs)
+                  el.setAttribute(k, attrs[k]);
+                return el;
+              }
+              function svgRendering() {
+                scores.map(function(score, i, a){
+                  let circle = makeSVG('circle', {cx: cx[i], cy: cy[i], r:pointSize, stroke: 'none', fill: '#5f9600'})
+                  document.getElementById("lineGraph").appendChild(circle);
                 });
               }
               getAttribute();
               svgRendering();
 
               window.addEventListener("resize", function(){
-                points = '';
+                let circles = document.querySelectorAll("#lineGraph circle");
+                circles.forEach(function(c){
+                  document.getElementById("lineGraph").removeChild(c);
+                })
                 getAttribute();
                 svgRendering();
               })
