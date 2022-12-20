@@ -117,9 +117,9 @@
 
               window.addEventListener("resize", function(){
                 let circles = document.querySelectorAll("#lineGraph circle");
-                circles.forEach(function(c){
-                  document.getElementById("lineGraph").removeChild(c);
-                })
+                for(let i=0; i<circles.length; i++){
+                  document.getElementById("lineGraph").removeChild(circles[i]);
+                }
                 getAttribute();
                 svgRendering();
               })
