@@ -1,0 +1,40 @@
+.LUNAR_CAL{
+  margin: 0 auto;
+}
+.CURVE_DATAA{
+  position: relative;
+  background-image: url(./images/lunar2023.jpg);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  height: inherit;
+}
+#lineGraphWrapper{
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+#lineGraphWrapper img{
+  max-width: 100%;
+  height: auto;
+}
+#lineGraphSVG{
+  position: absolute;
+  bottom: 21.8%;
+  max-width: 530px;
+  max-height: 200px;
+  width: 83%;
+  height: 66%;
+  transform: translate(2%, 2%);
+}
+#lineGraph{
+  stroke: #97c24d;
+  stroke-width: 3px;
+}
+#lineGraph polyline{
+  fill: none;
+}
+#lineGraph circle{
+  fill: #5f9600;
+  stroke: none;
+}
+/*線條為#97c24d，點點為#5f9600*/

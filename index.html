@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/line-graph.css">
   <title>SVG rendering</title>
 </head>
 <body>
@@ -19,115 +20,27 @@
           <svg id="lineGraph" width="100%" height="100%">
             <polyline points="20,20 60,64 100,108 140,152 180,20 220,64 260,108 300,152 340,20 380,64 420,152 460,20"></polyline>
           </svg>
-  
-          <style>
-              .LUNAR_CAL{
-                margin: 0 auto;
-              }
-              .CURVE_DATAA{
-                position: relative;
-                background-image: url(./images/lunar2023.jpg);
-                background-repeat: no-repeat;
-                background-size: 100%;
-                height: inherit;
-              }
-              #lineGraphWrapper{
-                position: relative;
-                display: flex;
-                justify-content: center;
-              }
-              #lineGraphWrapper img{
-                max-width: 100%;
-                height: auto;
-              }
-              #lineGraphSVG{
-                position: absolute;
-                /*
-                bottom: 21.5%;
-                left: 22%;
-                max-width: 536px;
-                max-height: 200px;
-                width: 79%;
-                height: 60%;*/
-                bottom: 21.8%;
-                max-width: 530px;
-                max-height: 200px;
-                width: 83%;
-                height: 66%;
-                transform: translate(2%, 2%);
-              }
-              #lineGraph{
-                stroke: #97c24d;
-                stroke-width: 3px;
-              }
-              #lineGraph polyline{
-                fill: none;
-              }
-              #lineGraph circle{
-                fill: #5f9600;
-                stroke: none;
-              }
-              /*線條為#97c24d，點點為#5f9600*/
-          </style>
-          <script type="text/javascript">
-            window.addEventListener("DOMContentLoaded", function(){
-              let scores = [95, 65, 75, 85, 95, 55, 65, 75, 85, 95]; //scores flexible values
-              let cx = []; //flexible values
-              let cy = []; //flexible values
-              let cySpacing = 10;
-              let baseline = 55;
-              const pointSize = 4;
-              const levels = 5;
-              const polyline = document.querySelector("#lineGraph polyline");
-              function getAttribute(){
-                let points = '';
-                let getBoundingClientRect = document.querySelector("#lineGraphSVG").getBoundingClientRect();
-                let svgHeight = getBoundingClientRect.height || 200;
-                let svgWidth = getBoundingClientRect.width;
-                // console.log('svgHeight: ', svgHeight, 'svgWidth: ', svgWidth);
-                
-                cx = scores.map((c, i, a)=>(i+1)*svgWidth/a.length-svgWidth/a.length/2);
-                cy = scores.map((c, i, a)=>(Math.abs((scores[i]%baseline)/cySpacing-levels))*svgHeight/levels-svgHeight/levels/2);
-                scores.forEach((c, i, a)=>{
-                  if(i==0){
-                    points+=cx[i];
-                    points+=','+cy[i]+' '+cx[++i];
-                  }else if(i==a.length-1){
-                    points+=','+cy[i];
-                  }else{
-                    points+=','+cy[i]+' '+cx[++i];
-                  }
-                })
-                polyline.setAttribute("points", points);
-              }
-              function makeSVG(tag, attrs) {
-                let el = document.createElementNS('http://www.w3.org/2000/svg', tag);
-                for (let k in attrs)
-                  el.setAttribute(k, attrs[k]);
-                return el;
-              }
-              function svgRendering() {
-                scores.map(function(score, i, a){
-                  let circle = makeSVG('circle', {cx: cx[i], cy: cy[i], r:pointSize, stroke: 'none', fill: '#5f9600'})
-                  document.getElementById("lineGraph").appendChild(circle);
-                });
-              }
-              getAttribute();
-              svgRendering();
-
-              window.addEventListener("resize", function(){
-                let circles = document.querySelectorAll("#lineGraph circle");
-                for(let i=0; i<circles.length; i++){
-                  document.getElementById("lineGraph").removeChild(circles[i]);
-                }
-                getAttribute();
-                svgRendering();
-              })
-            })
-          </script>
         </div>
       </div>
     </div>
   </div>
 </body>
 </html>
+<script src="./js/webpack/main.line-graph.bundle.js"></script>
+<script type="text/javascript">
+  window.addEventListener("DOMContentLoaded", function(){
+    const scores = [95, 65, 75, 85, 95, 55, 65, 75, 85, 95];
+    const options = {
+      baseline: 55,
+      levels: 5,
+      pointSize: 4,
+      svgSelector: "#lineGraphSVG",
+      lineSelector: "#lineGraph polyline",
+      circleContainerSelector: "#lineGraph",
+      circleFillColor: "#5f9600",
+    };
+
+    const lineGraph = new LineGraph(scores, options);
+    lineGraph.init();
+  })
+</script>
